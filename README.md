@@ -2,7 +2,18 @@
 
 Generates the game setup for Istanbul and Istanbul Mocha & Baksheesh by Pegasus Games. Tile names available in German and English.
 
-# License
+## Rules
+
+The placement rules for random setups in Istanbul are:
+
+ - the fountain has to be in the innermost 4 (6 for the expansion) tiles
+ - the black market and tea house have to be at least 3 tiles apart and cannot be on the same row/column
+
+## Code
+
+I first wrote this as a simple script, then refactored it into nicer JavaScript and then ended up with TypeScript, because I've been looking for an excuse to play around with it for a while. If you want to have a look at the code, check out the `app.ts` file, because the generated `app.js` file is less readable.
+
+## License
 
 Copyright (c) 2016 Michael Haeuslmann
 
