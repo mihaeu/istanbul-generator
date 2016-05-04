@@ -1,42 +1,51 @@
-(function () {
+(function() {
     'use strict';
+
     /**
      * @param {Array} array
      * @return {Array}
      */
-    var shuffle = function shuffle(array) {
-        var currentIndex = array.length, temporaryValue, randomIndex;
+    let shuffle = function shuffle(array) {
+        let currentIndex = array.length,
+            temporaryValue,
+            randomIndex;
+
         // While there remain elements to shuffle...
         while (0 !== currentIndex) {
             // Pick a remaining element...
             randomIndex = Math.floor(Math.random() * currentIndex);
             currentIndex -= 1;
+
             // And swap it with the current element.
             temporaryValue = array[currentIndex];
             array[currentIndex] = array[randomIndex];
             array[randomIndex] = temporaryValue;
         }
+
         return array;
     };
+
     /**
      * return {string}
      */
-    var gameVersion = function gameVersion() {
-        var gameVersions = document.getElementsByName('game');
-        for (var i = 0; i < gameVersions.length; i += 1) {
-            if (gameVersions[i].checked === true) {
-                return gameVersions[i].value;
+    let gameVersion = function gameVersion() : string {
+        const gameVersions = document.getElementsByName('game');
+        for (let i = 0; i < gameVersions.length; i += 1) {
+            if ((<HTMLInputElement>gameVersions[i]).checked === true) {
+                return (<HTMLInputElement>gameVersions[i]).value;
             }
         }
     };
+
     /**
      * @return {number[]}
      */
-    var legalPositionsForFountain = function legalPositionsForFountain() {
+    let legalPositionsForFountain = function legalPositionsForFountain() {
         return gameVersion() === 'base'
             ? [5, 6, 9, 10]
             : [6, 7, 8, 11, 12, 13];
     };
+
     /**
      * The rules for the fountain placement are:
      *
@@ -45,18 +54,20 @@
      * @param {number[]} cards
      * @return {boolean}
      */
-    var fountainPlacementIsIncorrect = function fountainPlacementIsIncorrect(cards) {
-        var actualFountainPosition = cards.indexOf(7);
-        return legalPositionsForFountain().indexOf(actualFountainPosition) === -1;
+    let fountainPlacementIsIncorrect = function fountainPlacementIsIncorrect(cards) {
+        let actualFountainPosition = cards.indexOf(7);
+        return legalPositionsForFountain().indexOf(actualFountainPosition) === -1
     };
+
     /**
      * @return {number}
      */
-    var columnsPerRow = function columnsPerRow() {
+    let columnsPerRow = function columnsPerRow() {
         return gameVersion() === 'base'
             ? 4
             : 5;
     };
+
     /**
      * The rules for the placement of the black market and the tea house are:
      *
@@ -67,28 +78,35 @@
      * @param {number[]} cards
      * @return {boolean}
      */
-    var blackMarketAndTeaHousePlacementIsIncorrect = function (cards) {
-        var columns = columnsPerRow(), blackMarketX = cards.indexOf(8) % columns, blackMarketY = cards.indexOf(8) / columns, teaHouseX = cards.indexOf(9) % columns, teaHouseY = cards.indexOf(9) / columns, distance = Math.abs(blackMarketX - teaHouseX) + Math.abs(blackMarketY - teaHouseY);
+    let blackMarketAndTeaHousePlacementIsIncorrect = function(cards: number[]) {
+        const columns = columnsPerRow(),
+            blackMarketX = cards.indexOf(8) % columns,
+            blackMarketY = cards.indexOf(8) / columns,
+            teaHouseX = cards.indexOf(9) % columns,
+            teaHouseY = cards.indexOf(9) / columns,
+            distance = Math.abs(blackMarketX - teaHouseX) + Math.abs(blackMarketY - teaHouseY);
         return blackMarketX === teaHouseX
             || blackMarketY === teaHouseY
             || distance < 3;
     };
-    var illegalStartingPosition = function illegalStartingPosition() {
-        var expansionStartingPosition = [
-            7, 2, 3, 4, 5,
-            1, 9, 8, 10, 6,
+
+    let illegalStartingPosition = function illegalStartingPosition() {
+        const expansionStartingPosition = [
+            7,  2,  3,  4,  5,
+            1,  9,  8,  10, 6,
             11, 12, 13, 14, 15,
             16, 17, 18, 19, 20
         ], baseStartingPosition = [
-            7, 2, 3, 4,
-            5, 1, 9, 8,
-            10, 6, 11, 12,
+            7,  2,  3,  4,
+            5,  1,  9,  8,
+            10, 6,  11, 12,
             13, 14, 15, 16
         ];
         return gameVersion() === 'base'
             ? baseStartingPosition
             : expansionStartingPosition;
     };
+
     /**
      * Generates a random setup for Istanbul (with or without Bakshish and Mokka)
      *
@@ -101,15 +119,16 @@
      *
      * @return {number[]}
      */
-    var generate = function generate() {
+    let generate = function generate() {
         // illegal starting state
-        var cards = illegalStartingPosition();
+        let cards = illegalStartingPosition();
         while (fountainPlacementIsIncorrect(cards) || blackMarketAndTeaHousePlacementIsIncorrect(cards)) {
             cards = shuffle(cards);
         }
         return cards;
     };
-    var enCardMapping = [
+
+    const enCardMapping = [
         'Wainwright',
         'Fabric Warehouse',
         'Spice Warehouse',
@@ -131,7 +150,8 @@
         'Tavern',
         'Coffee House'
     ];
-    var deCardMapping = [
+
+    const deCardMapping = [
         'Wagnerei',
         'Tuchlage',
         'Gewürzlager',
@@ -153,37 +173,43 @@
         'Taverne',
         'Kaffeehaus'
     ];
+
     /**
      * @return {string[]}
      */
-    var languageMapping = function languageMapping() {
-        var checkedLanguage = '', languages = document.getElementsByName('language');
-        for (var i = 0; i < languages.length; i += 1) {
-            if (languages[i].checked === true) {
-                checkedLanguage = languages[i].value;
+    let languageMapping = function languageMapping() : string[] {
+        let checkedLanguage = '',
+            languages = document.getElementsByName('language');
+        for (let i = 0; i < languages.length; i += 1) {
+            if ((<HTMLInputElement>languages[i]).checked === true) {
+                checkedLanguage = (<HTMLInputElement>languages[i]).value;
             }
         }
         return checkedLanguage === 'de'
             ? deCardMapping
             : enCardMapping;
     };
+
     /**
      * @param {number[]} cards
      * @return {string}
      */
-    var cardSetupToHtml = function cardSetupToHtml(cards) {
-        var output = '', mapping = languageMapping(), columns = columnsPerRow();
-        for (var i = 0; i < cards.length; i += 1) {
+    let cardSetupToHtml = function cardSetupToHtml(cards) {
+        let output = '',
+            mapping = languageMapping(),
+            columns = columnsPerRow();
+        for (let i = 0; i < cards.length; i += 1) {
             output += '<div class="card card-' + cards[i] + '">' + mapping[cards[i] - 1] + ' (' + cards[i] + ')</div>';
+
             if (i % columns === columns - 1) {
                 output += '<div class="clear"></div>';
             }
         }
         return output;
     };
-    document.getElementById('generate').onclick = function () {
+
+    document.getElementById('generate').onclick = function() {
         document.getElementById('generated-setup').innerHTML = cardSetupToHtml(generate());
     };
     document.getElementById('generated-setup').innerHTML = cardSetupToHtml(generate());
 })();
-//# sourceMappingURL=app.js.map
