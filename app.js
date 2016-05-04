@@ -23,7 +23,7 @@
 		}
 
 		return array;
-	}
+	};
 
 	/**
 	 * The rules for the fountain placement are:
@@ -37,7 +37,7 @@
 		var legalPositions = [6, 7, 8, 11, 12, 13],
 			actualFountainPosition = cards.indexOf(7);
 		return legalPositions.indexOf(actualFountainPosition) === -1
-	}
+	};
 
 	/**
 	 * The rules for the placement of the black market and the tea house are:
@@ -62,7 +62,7 @@
 		return blackMarketX === teaHouseX
 			|| blackmarketY === teaHouseY
 			|| distance < 3;
-	}
+	};
 
 	/**
 	 * Generates a random setup for Istanbul: Bakshish and Mokka
@@ -96,7 +96,70 @@
 			cards = shuffle(cards);
 		}
 		return cards;
-	}
+	};
+
+	var enCardMapping = [
+		'Wainwright',
+		'Fabric Warehouse',
+		'Spice Warehouse',
+		'Fruit Warehouse',
+		'Post Office',
+		'Caravansary',
+		'Fountain',
+		'Black Market',
+		'Tea House',
+		'Small Market',
+		'Large Market',
+		'Police Station',
+		'Sultan\'s Palace',
+		'Small Mosque',
+		'Great Mosque',
+		'Gemstone Dealer',
+		'Roasting Plant',
+		'Guild Hall',
+		'Tavern',
+		'Coffee House'
+	];
+
+	var deCardMapping = [
+		'Wagnerei',
+		'Tuchlage',
+		'Gewürzlager',
+		'Obstlager',
+		'Postamt',
+		'Karawanserei',
+		'Brunnen',
+		'Schwarzmark',
+		'Teestube',
+		'Kleiner Markt',
+		'Großer Markt',
+		'Polizeiwache',
+		'Sultanspalast',
+		'Kleine Moschee',
+		'Große Moschee',
+		'Edelsteinhändler',
+		'Kaffeerösterei',
+		'Gildenhalle',
+		'Taverne',
+		'Kaffeehaus'
+	];
+
+	/**
+	 * @return {string[]}
+	 */
+	var languageMapping = function languageMapping() {
+		var checkedLanguage = '',
+			languages = document.getElementsByName('language');
+		for (var index in languages) {
+			if (languages[index].checked === true) {
+				checkedLanguage = languages[index].value;
+			}
+		}
+		if (checkedLanguage === 'de') {
+			return deCardMapping;
+		}
+		return enCardMapping;
+	};
 
 	/**
 	 * @param {number[]} cards
@@ -105,38 +168,19 @@
 	var cardSetupToHtml = function cardSetupToHtml(cards) {
 		var i = 0,
 			output = '',
-			enCardMapping = [
-				'Wainwright',
-				'Fabric Warehouse',
-				'Spice Warehouse',
-				'Fruit Warehouse',
-				'Post Office',
-				'Caravansary',
-				'Fountain',
-				'Black Market',
-				'Tea House',
-				'Small Market',
-				'Large Market',
-				'Police Station',
-				'Sultan\'s Palace',
-				'Small Mosque',
-				'Great Mosque',
-				'Gemstone Dealer',
-				'Roasting Plant',
-				'Guild Hall',
-				'Tavern',
-				'Coffee House'
-			];
+			mapping = languageMapping();
 		for (i in cards) {
-			output += '<div class="card">' + enCardMapping[cards[i] - 1] + ' (' + cards[i] + ')</div>';
+			output += '<div class="card">' + mapping[cards[i] - 1] + ' (' + cards[i] + ')</div>';
 
 			if (i % 5 === 4) {
 				output += '<div class="clear"></div>';
 			}
 		}
 		return output;
+	};
+
+	document.getElementById('generate').onclick = function() {
+		document.getElementById('generated-setup').innerHTML = cardSetupToHtml(generate());
 	}
-
-
-	document.getElementById("gen").innerHTML = cardSetupToHtml(generate());
+	document.getElementById('generated-setup').innerHTML = cardSetupToHtml(generate());
 })();
