@@ -14,6 +14,94 @@
     margin: 10px;
 }
 
+#generated-setup {
+    display: inline-block;
+}
+
 .clear {
     clear: left;
+}
+
+.card-1 {
+    background: url("img/card1.jpg");
+}
+
+.card-2 {
+    background: url("img/card2.jpg");
+}
+
+.card-3 {
+    background: url("img/card3.jpg");
+}
+
+.card-4 {
+    background: url("img/card4.jpg");
+}
+
+.card-5 {
+    background: url("img/card5.jpg");
+}
+
+.card-6 {
+    background: url("img/card6.jpg");
+}
+
+.card-7 {
+    background: url("img/card7.jpg");
+}
+
+.card-8 {
+    background: url("img/card8.jpg");
+}
+
+.card-9 {
+    background: url("img/card9.jpg");
+}
+
+.card-10 {
+    background: url("img/card10.jpg");
+}
+
+.card-11 {
+    background: url("img/card11.jpg");
+}
+
+.card-12 {
+    background: url("img/card12.jpg");
+}
+
+.card-13 {
+    background: url("img/card13.jpg");
+}
+
+.card-14 {
+    background: url("img/card14.jpg");
+}
+
+.card-15 {
+    background: url("img/card15.jpg");
+}
+
+.card-16 {
+    background: url("img/card16.jpg");
+}
+
+.card-17 {
+    background: url("img/card17.jpg");
+    background-size: 150px 100px;
+}
+
+.card-18 {
+    background: url("img/card18.jpg");
+    background-size: 150px 100px;
+}
+
+.card-19 {
+    background: url("img/card19.jpg");
+    background-size: 150px 100px;
+}
+
+.card-20 {
+    background: url("img/card20.jpg");
+    background-size: 150px 100px;
 }

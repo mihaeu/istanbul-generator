@@ -217,7 +217,7 @@ class IstanbulGenerator {
             mapping = this.languageMapping(),
             columns = this.columnsPerRow();
         for (let i = 0; i < cards.length; i += 1) {
-            output += `<div class="card card-${cards[i]}">${mapping[cards[i] - 1]} (${cards[i]})</div>`;
+            output += `<div class="card card-${cards[i]}"></div>`;
 
             if (i % columns === columns - 1) {
                 output += '<div class="clear"></div>';
