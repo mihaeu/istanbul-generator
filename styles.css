@@ -1,0 +1,13 @@
+.card {
+    float: left;
+    width: 150px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    border: 3px solid black;
+    margin: 10px;
+}
+
+.clear {
+    clear: left;
+}

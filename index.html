@@ -6,63 +6,12 @@
     <title>Istanbul Generator</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        td {
-            width: 50px;
-            height: 50px;
-            vertical-align: middle;
-            text-align: center;
-            border: 3px solid black;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>Istanbul Generator</h1>
-    <p>Just a quick hack to generate starting positions for Istanbul by Pegasus Games.</p>
+    <p>Just a quick hack to generate starting positions for Istanbul by Pegasus Games (press F5 to reload).</p>
     <div id="gen"></div>
-    <script>
-        'use strict';
-
-        function shuffle(array) {
-            var currentIndex = array.length,
-                    temporaryValue,
-                    randomIndex;
-
-            // While there remain elements to shuffle...
-            while (0 !== currentIndex) {
-                // Pick a remaining element...
-                randomIndex = Math.floor(Math.random() * currentIndex);
-                currentIndex -= 1;
-
-                // And swap it with the current element.
-                temporaryValue = array[currentIndex];
-                array[currentIndex] = array[randomIndex];
-                array[randomIndex] = temporaryValue;
-            }
-
-            return array;
-        }
-
-        var cards = [7, 2, 3, 4, 5, 1, 9, 8, 10, 6, 11, 12, 13, 14, 15, 16]; // illegal state
-
-        while ([5, 6, 9, 10].indexOf(cards.indexOf(7)) === -1 || Math.abs(cards.indexOf(8) % 4 - cards.indexOf(9) % 4) + Math.abs(parseInt(cards.indexOf(8) / 4, 10) - parseInt(cards.indexOf(9) / 4, 10)) < 3) {
-            cards = shuffle(cards);
-            console.log(cards.indexOf(8), cards.indexOf(8) % 4);
-            console.log(cards.indexOf(9), cards.indexOf(9) % 4);
-            console.log(cards.indexOf(8) % 4 - cards.indexOf(9) % 4);
-            console.log(cards.indexOf(8), parseInt(cards.indexOf(8) / 4, 10));
-            console.log(cards.indexOf(9), parseInt(cards.indexOf(9) / 4, 10));
-            console.log(parseInt(cards.indexOf(8) / 4, 10) - parseInt(cards.indexOf(9) / 4, 10));
-            console.log("\n");
-        }
-
-        var i = void 0, output = '<table><tr>';
-        for (i = 0; i < cards.length; i += 1) {
-            if (cards[i] < 10) output += " ";
-            output += "<td>" + cards[i] + "</td>";
-            if (i % 4 === 3) output += "</tr><tr>";
-        }
-        document.getElementById("gen").innerHTML = output + '</tr></table>';
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
