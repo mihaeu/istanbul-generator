@@ -1,4 +1,5 @@
 # Istanbul Generator
+![Istanbul Generator](istanbul-generator.gif)
 
 Generates the game setup for Istanbul and Istanbul Mocha & Baksheesh by Pegasus Games. Tile names available in German and English.
 

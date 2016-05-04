@@ -9,28 +9,35 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Istanbul Generator</h1>
-    <p>Just a quick hack to generate starting positions for Istanbul by Pegasus Games (press F5 to reload).</p>
-    <form action="">
-        <label>
-            <input type="radio" name="game" value="base" checked>
-            Istanbul
-        </label>
-        <label>
-            <input type="radio" name="game" value="mocha">
-            Istanbul with Mocha &amp; Baksheesh
-        </label>
-        <label>
-            <input type="radio" name="language" value="en" checked>
-            EN
-        </label>
-        <label>
-            <input type="radio" name="language" value="de">
-            DE
-        </label>
-        <button id="generate" type="button">Generate</button>
-    </form>
-    <div id="generated-setup"></div>
+    <div class="content">
+        <img src="istanbul-generator.gif" alt="Istanbul Generator Logo">
+        <p>Just a quick hack to generate starting positions for Istanbul by Pegasus Games (press F5 to reload).</p>
+        <form action="">
+            <label>
+                <input type="radio" name="game" value="base">
+                Istanbul
+            </label>
+            <label>
+                <input type="radio" name="game" value="mocha" checked>
+                Istanbul with Mocha &amp; Baksheesh
+            </label>
+            <label>
+                <input type="radio" name="language" value="en" checked>
+                EN
+            </label>
+            <label>
+                <input type="radio" name="language" value="de">
+                DE
+            </label>
+            <button id="generate" type="button">Generate</button>
+        </form>
+        <div id="generated-setup"></div>
+        <footer>
+            <a href="https://github.com/mihaeu/istanbul-generator">
+                Copyright &copy; 2016 Michael Haeuslmann
+            </a>
+        </footer>
+    </div>
     <script src="app.js"></script>
 </body>
 </html>
