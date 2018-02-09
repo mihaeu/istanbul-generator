@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="">
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -12,28 +12,20 @@
     <div class="content">
         <img src="istanbul-generator.gif" alt="Istanbul Generator Logo">
         <p>Just a quick hack to generate starting positions for the famous board game Istanbul and Mocha &amp; Baksheesh by Pegasus Games.</p>
-        <form action="">
+        <form id="game-type" action="">
             <label>
-                <input type="radio" name="game" value="base">
+                <input class="game" type="radio" name="game" value="base">
                 Istanbul
             </label>
             <label>
-                <input type="radio" name="game" value="mocha" checked>
+                <input class="game" type="radio" name="game" value="mocha" checked>
                 Istanbul with Mocha &amp; Baksheesh
             </label>
-            <!--<label>-->
-                <!--<input type="radio" name="language" value="en" checked>-->
-                <!--EN-->
-            <!--</label>-->
-            <!--<label>-->
-                <!--<input type="radio" name="language" value="de">-->
-                <!--DE-->
-            <!--</label>-->
             <button id="generate" type="button">Generate</button>
         </form>
         <div id="generated-setup"></div>
         <footer>
-            <a href="www.pegasus.de/detailansicht/55115g-istanbul/">
+            <a href="https://www.pegasus.de/detailansicht/55115g-istanbul/">
                 Copyright belongs to Pegasus Spiele GmbH
             </a>
             <br>
@@ -44,5 +36,3 @@
         </footer>
     </div>
     <script src="app.js"></script>
-</body>
-</html>
