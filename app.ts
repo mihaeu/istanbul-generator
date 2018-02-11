@@ -1,50 +1,34 @@
-const Wainwright = 1;
-const FabricWarehouse = 2;
-const SpiceWarehouse = 3;
-const FruitWarehouse = 4;
-const PostOffice = 5;
-const Caravansary = 6;
-const Fountain = 7;
-const BlackMarket = 8;
-const TeaHouse = 9;
-const SmallMarket = 10;
-const LargeMarket = 11;
-const PoliceStation = 12;
-const SultansPalace = 13;
-const SmallMosque = 14;
-const GreatMosque = 15;
-const GemstoneDealer = 16;
-const RoastingPlant = 17;
-const GuildHall = 18;
-const Tavern = 19;
-const CoffeeHouse = 20;
+export enum Tile {
+    Wainwright = 1,
+    FabricWarehouse = 2,
+    SpiceWarehouse = 3,
+    FruitWarehouse = 4,
+    PostOffice = 5,
+    Caravansary = 6,
+    Fountain = 7,
+    BlackMarket = 8,
+    TeaHouse = 9,
+    SmallMarket = 10,
+    LargeMarket = 11,
+    PoliceStation = 12,
+    SultansPalace = 13,
+    SmallMosque = 14,
+    GreatMosque = 15,
+    GemstoneDealer = 16,
+    RoastingPlant = 17,
+    GuildHall = 18,
+    Tavern = 19,
+    CoffeeHouse = 20,
+    Embassy = 21,
+    Kiosk = 22,
+    AuctionHouse = 23,
+    SecretSociety = 24,
+    Catacombs = 25,
+}
 
-/**
- * The rules for the fountain placement are:
- *
- * - the fountain (card number 7) has to be in the 4/6 innermost positions
- */
-const baseFountainPositions = [5, 6, 9, 10];
-const mochaFountainPositions = [6, 7, 8, 11, 12, 13];
+type Tiles = Tile[];
 
-const baseColumns = 4;
-const mochaColumns = 5;
-
-const baseStartingPosition = [
-    7, 2, 3, 4,
-    5, 1, 9, 8,
-    10, 6, 11, 12,
-    13, 14, 15, 16,
-];
-
-const mochaStartingPosition = [
-    7, 2, 3, 4, 5,
-    1, 9, 8, 10, 6,
-    11, 12, 13, 14, 15,
-    16, 17, 18, 19, 20,
-];
-
-const shuffle = (xs) => {
+const shuffle = (xs: number[]) => {
     let currentIndex = xs.length;
     let temporaryValue = 0;
     let randomIndex = 0;
@@ -62,59 +46,68 @@ const shuffle = (xs) => {
 
     return xs;
 };
+const fountainPos4x4 = [5, 6, 9, 10];
+const fountainPos5x4 = [6, 7, 8, 11, 12, 13];
+const fountainPos5x5 = [12];
+const tileCount4x4 = 16;
+const tileCount5x4 = 20;
+const tileCount5x5 = 25;
 
-const isBaseGame = (): boolean => (document.querySelector(".game:checked") as HTMLInputElement).value === "base";
-
-const legalPositionsForFountain = () => isBaseGame() ? baseFountainPositions : mochaFountainPositions;
-
-const tilePos = (tileIndex, tiles) => tiles.indexOf(tileIndex);
-
-const fountainPlacementIsIncorrect = (tiles) => legalPositionsForFountain().indexOf(tilePos(Fountain, tiles)) === -1;
-
-const columnsPerRow = () => isBaseGame() ? baseColumns : mochaColumns;
-
-/**
- * The rules for the placement of the black market and the tea house are:
- *
- *  - the black market (card number 8) and the tea house (card number 9) have to be at
- *    least 3 spaces apart from each other (Manhattan distance)
- *  - the black market and the tea house may not be in the same row or column
- */
-const blackMarketAndTeaHousePlacementIsIncorrect = (tiles: number[]): boolean => {
-    const columns = columnsPerRow();
-    const blackMarketX = tiles.indexOf(BlackMarket) % columns;
-    const blackMarketY = tiles.indexOf(BlackMarket) / columns;
-    const teaHouseX = tiles.indexOf(TeaHouse) % columns;
-    const teaHouseY = tiles.indexOf(TeaHouse) / columns;
-    const distance = Math.abs(blackMarketX - teaHouseX) + Math.abs(blackMarketY - teaHouseY);
-    return blackMarketX === teaHouseX
-        || blackMarketY === teaHouseY
-        || distance < 3;
+const validFountain = (tileCount: Tile, validPos: Tiles) => (tiles: Tiles) => {
+    return tiles.length === tileCount && validPos.indexOf(tilePos(Tile.Fountain, tiles)) !== -1;
 };
 
-const illegalStartingPosition = () => isBaseGame() ? baseStartingPosition.slice() : mochaStartingPosition.slice();
+export const validFountain4x4 = validFountain(tileCount4x4, fountainPos4x4);
+export const validFountain5x4 = validFountain(tileCount5x4, fountainPos5x4);
+export const validFountain5x5 = validFountain(tileCount5x5, fountainPos5x5);
 
-/**
- * Generates a random setup for Istanbul (with or without Bakshish and Mokka)
- *
- * The rules for random generation are:
- *
- *  - the fountain (card number 7) has to be in the center
- *  - the black market (card number 8) and the tea house (card number 9) have to be at
- *    least 3 spaces apart from each other (Manhattan distance)
- *  - the black market and the tea house may not be in the same row or column
- */
-const generate = (): number[] => {
-    let tiles = illegalStartingPosition();
-    while (fountainPlacementIsIncorrect(tiles) || blackMarketAndTeaHousePlacementIsIncorrect(tiles)) {
-        tiles = shuffle(tiles);
+const columnCount = (tiles: Tiles) => tiles.length === 16 ? 4 : 5;
+
+const row = (tile: Tile, tiles: Tiles) => Math.floor(tilePos(tile, tiles) / columnCount(tiles));
+
+const column = (tile: Tile, tiles: Tiles) => Math.floor(tilePos(tile, tiles) % columnCount(tiles));
+
+export const blackMarketTeaHouseDifferentRows = (tiles: Tiles) => {
+    return row(Tile.BlackMarket, tiles) !== row(Tile.TeaHouse, tiles);
+};
+
+export const blackMarketTeaHouseDifferentColumns = (tiles: Tiles) => {
+    return column(Tile.BlackMarket, tiles) !== column(Tile.TeaHouse, tiles);
+};
+
+export const blackMarketTeaHouseDistanceGreaterThan3 = (tiles: Tiles) => {
+    return Math.abs(row(Tile.BlackMarket, tiles) - row(Tile.TeaHouse, tiles))
+        + Math.abs(column(Tile.BlackMarket, tiles) - column(Tile.TeaHouse, tiles)) > 3;
+};
+
+const $ = (cssSelector: string): HTMLElement[] => [].slice.call(document.querySelectorAll(cssSelector));
+const selectedGameType = () => $(".game:checked").map((el) => (el as HTMLInputElement).value);
+
+const determineGameType = (): GameType => {
+    const selected = selectedGameType();
+
+    if (selected.length === 0) {
+        return GameType.Base;
     }
-    return tiles;
+
+    if (selected.length === 2) {
+        return GameType.Both;
+    }
+
+    return selected.pop() as GameType;
 };
 
-const tilesToHtml = (tiles): string => {
+const tilePos = (tileIndex: number, tiles: Tiles) => tiles.indexOf(tileIndex);
+
+type Rule = (tiles: Tiles) => boolean;
+
+export const generate = (tiles: Tiles, rules: Rule): Tiles => {
+    return rules(tiles) ? tiles : generate(shuffle(tiles.slice()), rules);
+};
+
+export const renderTilesAsHtml = (tiles: Tiles): string => {
     let output = "";
-    const columns = columnsPerRow();
+    const columns = columnCount(tiles);
     for (let i = 0; i < tiles.length; i += 1) {
         output += `<div class="card card-${tiles[i]}"></div>`;
 
@@ -125,10 +118,60 @@ const tilesToHtml = (tiles): string => {
     return output;
 };
 
-const generateAndOutputHtml = (): void => {
-    document.getElementById("generated-setup").innerHTML = tilesToHtml(generate());
+export enum GameType {
+    Base = "Base",
+    MochaBaksheesh = "MochaBaksheesh",
+    LettersSeals = "LettersSeals",
+    Both = "Both",
+}
+
+const generateArray = (n: number) => Array.apply(null, {length: n}).map((value: number, index: number) => index + 1);
+
+export const generateStartTiles = (gameType: GameType): Tiles => {
+    switch (gameType) {
+        case GameType.Base:
+            return generateArray(16);
+        case GameType.MochaBaksheesh:
+            return generateArray(20);
+        case GameType.LettersSeals:
+            return generateArray(16).concat([21, 22, 23, 24]);
+        case GameType.Both:
+            return generateArray(25);
+    }
 };
 
-generateAndOutputHtml();
-document.getElementById("generate").onclick = generateAndOutputHtml;
-document.getElementById("game-type").onchange = generateAndOutputHtml;
+export const composeRules = (gameType: GameType) => (tiles: Tiles): boolean => {
+    if (gameType === GameType.Base) {
+        return validFountain4x4(tiles) && blackMarketTeaHouseDistanceGreaterThan3(tiles);
+    }
+
+    return gameType === GameType.Both ? validFountain5x5(tiles) : validFountain5x4(tiles)
+        && blackMarketTeaHouseDifferentColumns(tiles)
+        && blackMarketTeaHouseDifferentRows(tiles)
+        && blackMarketTeaHouseDistanceGreaterThan3(tiles);
+};
+
+const randomizeStartSetup = (tiles: Tiles) => {
+    for (let i = 0; i < Math.random() * 10; i += 1) {
+        tiles = shuffle(tiles);
+    }
+    return tiles;
+};
+
+const generateAndOutputHtml = (element: HTMLElement) => () => element.innerHTML = renderTilesAsHtml(
+    generate(randomizeStartSetup(generateStartTiles(determineGameType())), composeRules(determineGameType())),
+);
+
+window.addEventListener("load", () => {
+    const target = document.getElementById("generated-setup");
+    const generateButton = document.getElementById("generate");
+    const gameTypeForm = document.getElementById("game-type");
+
+    if (target && generateButton && gameTypeForm) {
+        generateAndOutputHtml(target);
+        generateButton.onclick = generateAndOutputHtml(target);
+        gameTypeForm.onchange = generateAndOutputHtml(target);
+    } else {
+        console.error("damn");
+    }
+}, false);
